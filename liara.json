@@ -8,5 +8,10 @@
         "configCache": true,
         "routeCache": true,
         "buildAssets": true
+    },
+    "deploy": {
+        "env": {
+            "PUPPETEER_SKIP_DOWNLOAD": "true"
+        }
     }
 }
