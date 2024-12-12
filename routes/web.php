@@ -29,19 +29,26 @@ Route::get('/pdf', function () {
 //        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe') // مسیر Chrome دانلود شده
 //        ->noSandbox() // اختیاری
 //        ->save(public_path('example.pdf'));
-    $html = View::make('pdf-example')->render(); // فایل Blade را رندر کنید
-//
-    $pdfContent = Browsershot::html($html)
-        ->setChromePath('/root/.cache/puppeteer/chrome/linux-131.0.6778.87/chrome-linux64/chrome')
-        ->noSandbox()
-        ->timeout(120)
-        ->emulateMedia('print')
-        ->showBackground()
-        ->pdf();
+    try {
+        // فایل Blade را رندر کنید
+        $html = View::make('pdf-example')->render();
 
-    return response($pdfContent)
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'attachment; filename="contract.pdf"');
+        // تولید PDF با Browsershot
+        $pdfContent = Browsershot::html($html)
+            ->noSandbox() // فعال کردن حالت no-sandbox
+            ->timeout(120) // تنظیم تایم‌اوت
+            ->emulateMedia('print') // استفاده از مد چاپ
+            ->showBackground() // نمایش بک‌گراند
+            ->pdf();
+
+        // بازگشت فایل PDF به عنوان پاسخ
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="contract.pdf"');
+    } catch (\Exception $e) {
+        // مدیریت خطاها
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 
 //    Browsershot::html('<h1>Hello World!</h1>')
 //        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe') // مسیر دقیق Chrome
