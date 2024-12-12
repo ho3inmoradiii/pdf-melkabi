@@ -23,6 +23,7 @@ Route::get('/', function () {
 Route::view('view', 'pdf-example');
 
 Route::get('/pdf', function () {
+
 //    Browsershot::html('<h1>سلام داش حسین</h1>
 //<p>به کمک لاراول و Spatie PDF می‌توانیم به راحتی PDF تولید کنیم.</p>')
 //        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe') // مسیر Chrome دانلود شده
