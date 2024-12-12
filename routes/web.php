@@ -28,17 +28,15 @@ Route::get('/pdf', function () {
 //        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe') // مسیر Chrome دانلود شده
 //        ->noSandbox() // اختیاری
 //        ->save(public_path('example.pdf'));
-    $html = View::make('pdf-example')->render(); // فایل Blade را رندر کنید
-//
+    $html = View::make('pdf-example')->render();
+
     $pdfContent = Browsershot::html($html)
-        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe')
         ->noSandbox()
         ->timeout(120)
-        ->emulateMedia('print') // پشتیبانی از @page و CSS
-        ->showBackground() // نمایش پس‌زمینه
-        ->pdf(); // متد pdf() خروجی را در حافظه نگه می‌دارد
+        ->emulateMedia('print')
+        ->showBackground()
+        ->pdf();
 
-    // تنظیم هدرهای دانلود
     return response($pdfContent)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'attachment; filename="contract.pdf"');
