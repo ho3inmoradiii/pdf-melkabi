@@ -28,9 +28,10 @@ Route::get('/pdf', function () {
 //        ->setChromePath('C:/Win_x64_1310011_chrome-win/chrome-win/chrome.exe') // مسیر Chrome دانلود شده
 //        ->noSandbox() // اختیاری
 //        ->save(public_path('example.pdf'));
-    $html = View::make('pdf-example')->render();
-
+    $html = View::make('pdf-example')->render(); // فایل Blade را رندر کنید
+//
     $pdfContent = Browsershot::html($html)
+        ->setChromePath('/root/.cache/puppeteer/chrome/linux-131.0.6778.87/chrome-linux64/chrome')
         ->noSandbox()
         ->timeout(120)
         ->emulateMedia('print')
