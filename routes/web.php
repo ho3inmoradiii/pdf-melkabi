@@ -30,23 +30,24 @@ Route::get('/pdf', function () {
 //        ->noSandbox() // اختیاری
 //        ->save(public_path('example.pdf'));
     try {
-        // فایل Blade را رندر کنید
+        // رندر فایل Blade
         $html = View::make('pdf-example')->render();
 
-        // تولید PDF با Browsershot
+        // تولید PDF با استفاده از سرور Chrome ریموت
         $pdfContent = Browsershot::html($html)
-            ->noSandbox() // فعال کردن حالت no-sandbox
-            ->timeout(120) // تنظیم تایم‌اوت
+            ->setRemoteInstance('185.208.181.138', 9222) // آیپی و پورت سرور Chrome ریموت
+            ->noSandbox() // در صورت نیاز
+            ->timeout(120) // زمان‌سنجی برای اجرای مرورگر
             ->emulateMedia('print') // استفاده از مد چاپ
-            ->showBackground() // نمایش بک‌گراند
+            ->showBackground() // نمایش پس‌زمینه
             ->pdf();
 
-        // بازگشت فایل PDF به عنوان پاسخ
+        // بازگشت فایل PDF
         return response($pdfContent)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="contract.pdf"');
     } catch (\Exception $e) {
-        // مدیریت خطاها
+        // مدیریت خطا
         return response()->json(['error' => $e->getMessage()], 500);
     }
 
