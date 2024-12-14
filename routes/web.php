@@ -35,7 +35,7 @@ Route::get('/pdf', function () {
 
         // تولید PDF با استفاده از سرور Chrome ریموت
         $pdfContent = Browsershot::html($html)
-            ->setRemoteInstance('https://pdf-melkabi-chrome-w5fqqa4ej2.liara.run/', 9222) // آیپی و پورت سرور Chrome ریموت
+            ->setRemoteInstance('pdf-melkabi-chrome-w5fqqa4ej2.liara.run', 9222) // آیپی و پورت سرور Chrome ریموت
             ->noSandbox() // در صورت نیاز
             ->timeout(120) // زمان‌سنجی برای اجرای مرورگر
             ->emulateMedia('print') // استفاده از مد چاپ
