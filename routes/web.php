@@ -33,20 +33,21 @@ Route::get('/pdf', function () {
         // رندر فایل Blade
         $html = View::make('pdf-example')->render();
 
-        // تولید PDF
+        // تولید PDF با استفاده از سرور Chrome ریموت
         $pdfContent = Browsershot::html($html)
-            ->setChromePath('/root/.cache/puppeteer/chrome/linux-131.0.6778.87/chrome-linux64/chrome') // مسیر دقیق Chrome
-            ->noSandbox() // جلوگیری از مشکلات دسترسی
-            ->timeout(120) // تنظیم زمان اجرا
-            ->emulateMedia('print') // مد چاپ
+            ->setRemoteInstance('https://pdf-melkabi-chrome-w5fqqa4ej2.liara.run/', 9222) // آیپی و پورت سرور Chrome ریموت
+            ->noSandbox() // در صورت نیاز
+            ->timeout(120) // زمان‌سنجی برای اجرای مرورگر
+            ->emulateMedia('print') // استفاده از مد چاپ
             ->showBackground() // نمایش پس‌زمینه
             ->pdf();
 
         // بازگشت فایل PDF
         return response($pdfContent)
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="output.pdf"');
+            ->header('Content-Disposition', 'attachment; filename="contract.pdf"');
     } catch (\Exception $e) {
+        // مدیریت خطا
         return response()->json(['error' => $e->getMessage()], 500);
     }
 
